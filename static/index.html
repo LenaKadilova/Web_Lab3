@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Лабораторная работа №2 — Вариант 666</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            color: #222222;
+            background: #f4f5f7;
+        }
+
+        #header {
+            width: 100%;
+            border-spacing: 0;
+            background: #ffffff;
+            border: 1px solid #d0d3d8;
+            border-radius: 4px;
+            padding: 14px 18px;
+            margin-bottom: 16px;
+            font-family: Georgia, 'Times New Roman', serif;
+            color: #1a3a5c;
+            font-size: 16px;
+        }
+
+        #header > tbody > tr > .header-row {
+            padding: 2px 0;
+        }
+
+        #header > tbody > tr > .header-row::before {
+            content: "— ";
+            color: #8a94a3;
+        }
+
+        h1 {
+            font-size: 20px;
+            margin: 0 0 10px 0;
+        }
+
+        #layout {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        #layout > tbody > tr > td {
+            vertical-align: top;
+            padding: 10px;
+        }
+
+        .panel {
+            width: 100%;
+            border-spacing: 0;
+            background: #ffffff;
+            border: 1px solid #d0d3d8;
+            border-radius: 4px;
+        }
+
+        .panel > tbody > tr > td {
+            padding: 14px;
+        }
+
+        canvas {
+            border: 1px solid #b8bec7;
+            background: #ffffff;
+            display: block;
+        }
+
+        .form-table {
+            border-spacing: 0;
+        }
+
+        .form-table > tbody > tr > td {
+            padding: 4px 0;
+            vertical-align: middle;
+        }
+
+        .form-table .label-cell {
+            width: 130px;
+            font-weight: bold;
+        }
+
+        input[type="text"], select {
+            padding: 6px 8px;
+            margin: 2px 4px;
+            border: 1px solid #9aa2ad;
+            border-radius: 3px;
+            font-size: 14px;
+        }
+
+        .radio-group label {
+            margin-right: 12px;
+            font-weight: normal;
+        }
+
+        .invalid {
+            border-color: #c0392b !important;
+            background: #fdecea;
+        }
+
+        .error-text {
+            color: #c0392b;
+            font-size: 12px;
+            height: 16px;
+            padding-left: 4px;
+        }
+
+        button {
+            margin-top: 10px;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 3px;
+            background: #1a5c8a;
+            color: #ffffff;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #134767;
+        }
+
+        .btn-group button {
+            margin: 2px 3px;
+            padding: 6px 10px;
+            background: #ffffff;
+            color: #1a5c8a;
+            border: 1px solid #1a5c8a;
+        }
+
+        .btn-group button.selected {
+            background: #1a5c8a;
+            color: #ffffff;
+        }
+
+        #results-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 14px;
+            font-size: 13px;
+        }
+
+        #results-table th, #results-table td {
+            border: 1px solid #d0d3d8;
+            padding: 6px 8px;
+            text-align: center;
+        }
+
+        #results-table th {
+            background: #eef1f5;
+        }
+
+        #results-table > tbody > tr:nth-child(even) {
+            background: #f7f9fb;
+        }
+
+        .hit-yes {
+            color: #1e7e34;
+            font-weight: bold;
+        }
+
+        .hit-no {
+            color: #c0392b;
+            font-weight: bold;
+        }
+
+        .section-title {
+            font-size: 15px;
+            margin: 0 0 10px 0;
+            color: #1a3a5c;
+        }
+    </style>
+</head>
+<body>
+
+<table id="header">
+    <tbody>
+    <tr>
+        <td><h1>Лабораторная работа №2</h1></td>
+    </tr>
+    <tr>
+        <td class="header-row">Студент: Кадилова Елена Владимировна</td>
+    </tr>
+    <tr>
+        <td class="header-row">Группа: Веб-пр (P3215) 1.8</td>
+    </tr>
+    <tr>
+        <td class="header-row">Вариант: 666</td>
+    </tr>
+    </tbody>
+</table>
+
+<table id="layout">
+    <tbody>
+    <tr>
+        <td style="width:420px;">
+            <table class="panel">
+                <tbody>
+                <tr>
+                    <td>
+                        <p class="section-title">Область (вариант 666)</p>
+                        <canvas id="plane" width="400" height="400"></canvas>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+        <td>
+            <table class="panel">
+                <tbody>
+                <tr>
+                    <td>
+                        <p class="section-title">Проверка точки</p>
+                        <form id="point-form" novalidate>
+                            <table class="form-table">
+                                <tbody>
+                                <tr>
+                                    <td class="label-cell">X:</td>
+                                    <td class="btn-group" id="x-input">
+                                        <button type="button" value="-5">-5</button>
+                                        <button type="button" value="-4">-4</button>
+                                        <button type="button" value="-3">-3</button>
+                                        <button type="button" value="-2">-2</button>
+                                        <button type="button" value="-1">-1</button>
+                                        <button type="button" value="0">0</button>
+                                        <button type="button" value="1">1</button>
+                                        <button type="button" value="2">2</button>
+                                        <button type="button" value="3">3</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td class="error-text" id="x-error"></td>
+                                </tr>
+                                <tr>
+                                    <td class="label-cell"><label for="y-input">Y (от -5 до 3):</label></td>
+                                    <td><input type="text" id="y-input" name="y" placeholder="например, 1.5"></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td class="error-text" id="y-error"></td>
+                                </tr>
+                                <tr>
+                                    <td class="label-cell">R:</td>
+                                    <td class="btn-group" id="r-input">
+                                        <button type="button" value="1" class="selected">1</button>
+                                        <button type="button" value="1.5">1.5</button>
+                                        <button type="button" value="2">2</button>
+                                        <button type="button" value="2.5">2.5</button>
+                                        <button type="button" value="3">3</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td class="error-text" id="r-error"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"><button type="submit">Проверить</button></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" class="error-text" id="server-error"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <table class="panel" style="margin-top:14px;">
+                <tbody>
+                <tr>
+                    <td>
+                        <p class="section-title">Результаты проверок</p>
+                        <table id="results-table">
+                            <thead>
+                            <tr>
+                                <th>X</th>
+                                <th>Y</th>
+                                <th>R</th>
+                                <th>Результат</th>
+                                <th>Текущее время</th>
+                                <th>Время работы, мкс</th>
+                            </tr>
+                            </thead>
+                            <tbody id="results-body">
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/decimal.js/10.4.3/decimal.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
