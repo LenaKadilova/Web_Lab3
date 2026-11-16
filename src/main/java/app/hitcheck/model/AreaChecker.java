@@ -1,7 +1,6 @@
-package app.hitcheck;
+package app.hitcheck.model;
 
 import java.math.BigDecimal;
-
 
 public final class AreaChecker {
 
@@ -16,14 +15,18 @@ public final class AreaChecker {
     }
 
     private static boolean inRectangle(BigDecimal x, BigDecimal y, BigDecimal r) {
-        return x.signum() <= 0 && y.signum() >= 0 && x.multiply(TWO).compareTo(r.negate()) >= 0 && y.compareTo(r) <= 0;
+        return x.signum() >= 0 && y.signum() >= 0
+                && x.compareTo(r) <= 0
+                && y.multiply(TWO).compareTo(r) <= 0;
     }
 
     private static boolean inTriangle(BigDecimal x, BigDecimal y, BigDecimal r) {
-        return x.signum() <= 0 && y.signum() <= 0 && x.add(y.multiply(TWO)).compareTo(r.negate()) >= 0;
+        return x.signum() <= 0 && y.signum() >= 0
+                && y.multiply(TWO).compareTo(x.multiply(TWO).add(r)) <= 0;
     }
 
     private static boolean inQuarterCircle(BigDecimal x, BigDecimal y, BigDecimal r) {
-        return x.signum() >= 0 && y.signum() <= 0 && x.multiply(x).add(y.multiply(y)).multiply(FOUR).compareTo(r.multiply(r)) <= 0;
+        return x.signum() >= 0 && y.signum() <= 0
+                && x.multiply(x).add(y.multiply(y)).multiply(FOUR).compareTo(r.multiply(r)) <= 0;
     }
 }
