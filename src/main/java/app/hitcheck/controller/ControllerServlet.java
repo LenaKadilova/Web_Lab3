@@ -18,8 +18,6 @@ public class ControllerServlet extends HttpServlet {
         req.setCharacterEncoding("UTF-8");
 
         if (hasPointData(req)) {
-            // AreaCheckServlet не имеет URL-маппинга, поэтому достучаться до него
-            // можно только отсюда — через именованный диспетчер
             getServletContext().getNamedDispatcher(AREA_CHECK_SERVLET).forward(req, resp);
         } else {
             req.getRequestDispatcher(FORM_JSP).forward(req, resp);
