@@ -7,16 +7,16 @@ import java.util.regex.Pattern;
 public final class Validator {
 
     private static final List<BigDecimal> ALLOWED_X = List.of(
-            bd("-5"), bd("-4"), bd("-3"), bd("-2"), bd("-1"),
-            bd("0"), bd("1"), bd("2"), bd("3"));
+            bd("-2"), bd("-1.5"), bd("-1"), bd("-0.5"), bd("0"),
+            bd("0.5"), bd("1"), bd("1.5"), bd("2"));
 
     private static final List<BigDecimal> ALLOWED_R = List.of(
             bd("1"), bd("2"), bd("3"), bd("4"), bd("5"));
 
-    private static final BigDecimal X_MIN = bd("-5");
-    private static final BigDecimal X_MAX = bd("3");
-    private static final BigDecimal Y_MIN = bd("-5");
-    private static final BigDecimal Y_MAX = bd("3");
+    private static final BigDecimal X_MIN = bd("-2");
+    private static final BigDecimal X_MAX = bd("2");
+    private static final BigDecimal Y_MIN = bd("-3");
+    private static final BigDecimal Y_MAX = bd("5");
 
     private static final Pattern NUMBER = Pattern.compile("^-?\\d{1,10}(\\.\\d{1,20})?$");
 
@@ -39,15 +39,15 @@ public final class Validator {
         BigDecimal x = parse(single(xs, "X"), "X");
         if (fromCanvas) {
             if (x.compareTo(X_MIN) < 0 || x.compareTo(X_MAX) > 0) {
-                throw new ValidationException("X должен быть в отрезке [-5; 3]");
+                throw new ValidationException("X должен быть в [-2; 2]");
             }
         } else if (ALLOWED_X.stream().noneMatch(a -> a.compareTo(x) == 0)) {
-            throw new ValidationException("X должен быть одним из: -5, -4, -3, -2, -1, 0, 1, 2, 3");
+            throw new ValidationException("X должен быть одним из: -2, -1.5, -1, -0.5, 0, 0.5, 1, 1.5, 2");
         }
 
         BigDecimal y = parse(single(ys, "Y"), "Y");
         if (y.compareTo(Y_MIN) <= 0 || y.compareTo(Y_MAX) >= 0) {
-            throw new ValidationException("Y должен быть в интервале (-5; 3)");
+            throw new ValidationException("Y должен быть в (-3; 5)");
         }
 
         BigDecimal r = parse(single(rs, "R"), "R");
@@ -63,7 +63,7 @@ public final class Validator {
             throw new ValidationException("Не передан параметр " + name);
         }
         if (values.length > 1) {
-            throw new ValidationException("Для " + name + " нужно выбрать ровно одно значение");
+            throw new ValidationException("Для " + name + " нужно выбрать ровно 1 значение");
         }
         return values[0];
     }

@@ -43,12 +43,8 @@ window.Graph = (function () {
             ctx.stroke();
 
             ctx.beginPath();
-            p = toPx(0, 0);
-            ctx.moveTo(p[0], p[1]);
-            p = toPx(-R / 2, 0);
-            ctx.lineTo(p[0], p[1]);
-            p = toPx(0, R / 2);
-            ctx.lineTo(p[0], p[1]);
+            ctx.moveTo(cx, cy);
+            ctx.arc(cx, cy, R * scale, Math.PI, 1.5 * Math.PI, false);
             ctx.closePath();
             ctx.fill();
             ctx.stroke();
@@ -56,7 +52,10 @@ window.Graph = (function () {
             ctx.beginPath();
             p = toPx(0, 0);
             ctx.moveTo(p[0], p[1]);
-            ctx.arc(cx, cy, (R / 2) * scale, 0, Math.PI / 2, false);
+            p = toPx(R / 2, 0);
+            ctx.lineTo(p[0], p[1]);
+            p = toPx(0, -R);
+            ctx.lineTo(p[0], p[1]);
             ctx.closePath();
             ctx.fill();
             ctx.stroke();

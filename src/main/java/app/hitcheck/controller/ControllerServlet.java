@@ -25,8 +25,6 @@ public class ControllerServlet extends HttpServlet {
     }
 
     private static boolean hasPointData(HttpServletRequest req) {
-        return req.getParameter("x") != null
-                || req.getParameter("y") != null
-                || req.getParameter("r") != null;
+        return req.getParameter("x") != null || req.getParameter("y") != null || req.getParameter("r") != null;
     }
 }

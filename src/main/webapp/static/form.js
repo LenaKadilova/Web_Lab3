@@ -2,8 +2,10 @@
     'use strict';
 
     const form = document.getElementById('point-form');
-    const xBoxes = document.querySelectorAll('input[name="x"]');
-    const rBoxes = document.querySelectorAll('input[name="r"]');
+    const xButtons = document.querySelectorAll('#x-buttons button');
+    const rButtons = document.querySelectorAll('#r-buttons button');
+    const xInput = document.getElementById('x-input');
+    const rInput = document.getElementById('r-input');
     const yInput = document.getElementById('y-input');
     const xError = document.getElementById('x-error');
     const yError = document.getElementById('y-error');
@@ -11,21 +13,15 @@
     const canvasError = document.getElementById('canvas-error');
     const canvas = document.getElementById('plane');
 
-    const ALLOWED_X = ['-5', '-4', '-3', '-2', '-1', '0', '1', '2', '3'];
+    const ALLOWED_X = ['-2', '-1.5', '-1', '-0.5', '0', '0.5', '1', '1.5', '2'];
     const ALLOWED_R = ['1', '2', '3', '4', '5'];
     const NUMBER = /^-?\d{1,10}(\.\d{1,20})?$/;
 
     const graph = Graph.create(canvas);
     const points = Graph.readPoints('#results-body tr[data-x]');
 
-    function checkedValues(boxes) {
-        return Array.prototype.filter.call(boxes, function (b) { return b.checked; })
-            .map(function (b) { return b.value; });
-    }
-
     function selectedR() {
-        const values = checkedValues(rBoxes);
-        return values.length === 1 && ALLOWED_R.includes(values[0]) ? values[0] : null;
+        return ALLOWED_R.includes(rInput.value) ? rInput.value : null;
     }
 
     function redraw() {
@@ -33,14 +29,12 @@
         graph.draw(r ? Number(r) : null, points);
     }
 
-    function makeSingleChoice(boxes, onChange) {
-        boxes.forEach(function (box) {
-            box.addEventListener('change', function () {
-                if (box.checked) {
-                    boxes.forEach(function (other) {
-                        if (other !== box) other.checked = false;
-                    });
-                }
+    function bindButtons(buttons, hiddenInput, onChange) {
+        buttons.forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                buttons.forEach(function (b) { b.classList.remove('selected'); });
+                btn.classList.add('selected');
+                hiddenInput.value = btn.value;
                 if (onChange) onChange();
             });
         });
@@ -50,16 +44,15 @@
         if (!NUMBER.test(raw)) return false;
         const negative = raw.charAt(0) === '-';
         const intPart = Number(raw.replace('-', '').split('.')[0]);
-        return negative ? intPart < 5 : intPart < 3;
+        return negative ? intPart < 3 : intPart < 5;
     }
 
     function validateForm() {
         let valid = true;
 
-        const xs = checkedValues(xBoxes);
         xError.textContent = '';
-        if (xs.length !== 1 || !ALLOWED_X.includes(xs[0])) {
-            xError.textContent = 'Выберите одно значение X';
+        if (!ALLOWED_X.includes(xInput.value)) {
+            xError.textContent = 'Выберите значение X';
             valid = false;
         }
 
@@ -71,14 +64,14 @@
             yInput.classList.add('invalid');
             valid = false;
         } else if (!isYValid(yRaw)) {
-            yError.textContent = 'Y должен быть числом в интервале (-5; 3)';
+            yError.textContent = 'Y должен быть числом в интервале (-3; 5)';
             yInput.classList.add('invalid');
             valid = false;
         }
 
         rError.textContent = '';
         if (selectedR() === null) {
-            rError.textContent = 'Выберите одно значение R';
+            rError.textContent = 'Выберите значение R';
             valid = false;
         }
 
@@ -103,8 +96,8 @@
         yInput.value = yInput.value.trim().replace(',', '.');
     });
 
-    makeSingleChoice(xBoxes, function () { xError.textContent = ''; });
-    makeSingleChoice(rBoxes, function () {
+    bindButtons(xButtons, xInput, function () { xError.textContent = ''; });
+    bindButtons(rButtons, rInput, function () {
         rError.textContent = '';
         canvasError.textContent = '';
         redraw();
@@ -114,7 +107,7 @@
         canvasError.textContent = '';
         const r = selectedR();
         if (r === null) {
-            canvasError.textContent = 'Выберите радиус R';
+            canvasError.textContent = 'Невозможно определить координаты точки: выберите радиус R';
             return;
         }
 
@@ -122,12 +115,12 @@
         const x = Math.round(c.x * 1000) / 1000;
         const y = Math.round(c.y * 1000) / 1000;
 
-        if (x < -5 || x > 3) {
-            canvasError.textContent = 'X = ' + x + ' не в [-5; 3]';
+        if (x < -2 || x > 2) {
+            canvasError.textContent = 'X = ' + x + ' не в [-2; 2]';
             return;
         }
-        if (y <= -5 || y >= 3) {
-            canvasError.textContent = 'Y = ' + y + ' не в (-5; 3)';
+        if (y <= -3 || y >= 5) {
+            canvasError.textContent = 'Y = ' + y + ' не в (-3; 5)';
             return;
         }
 

@@ -1,6 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
-<jsp:useBean id="resultsBean" class="app.hitcheck.model.ResultsBean" scope="session"/>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html>
 <html lang="ru">
@@ -47,26 +46,28 @@
                                 <tbody>
                                 <tr>
                                     <td class="label-cell">X:</td>
-                                    <td class="check-group">
-                                        <c:forEach var="xv" items="-5,-4,-3,-2,-1,0,1,2,3">
-                                            <label><input type="checkbox" name="x" value="${xv}"> ${xv}</label>
-                                        </c:forEach>
+                                    <td class="btn-group" id="x-buttons">
+                                        <c:forTokens var="xv" items="-2,-1.5,-1,-0.5,0,0.5,1,1.5,2" delims=",">
+                                            <button type="button" value="${xv}">${xv}</button>
+                                        </c:forTokens>
+                                        <input type="hidden" name="x" id="x-input">
                                     </td>
                                 </tr>
                                 <tr><td></td><td class="error-text" id="x-error"></td></tr>
                                 <tr>
-                                    <td class="label-cell"><label for="y-input">Y (-5 ... 3):</label></td>
+                                    <td class="label-cell"><label for="y-input">Y (-3 ... 5):</label></td>
                                     <td><input type="text" id="y-input" name="y" maxlength="30"
                                                placeholder="например, 1.5" autocomplete="off"></td>
                                 </tr>
                                 <tr><td></td><td class="error-text" id="y-error"></td></tr>
                                 <tr>
                                     <td class="label-cell">R:</td>
-                                    <td class="check-group">
-                                        <c:forEach var="rv" items="1,2,3,4,5">
-                                            <label><input type="checkbox" name="r" value="${rv}"
-                                                    ${resultsBean.lastR == rv ? 'checked' : ''}> ${rv}</label>
-                                        </c:forEach>
+                                    <td class="btn-group" id="r-buttons">
+                                        <c:forTokens var="rv" items="1,2,3,4,5" delims=",">
+                                            <button type="button" value="${rv}"
+                                                    class="${sessionScope.lastR == rv ? 'selected' : ''}">${rv}</button>
+                                        </c:forTokens>
+                                        <input type="hidden" name="r" id="r-input" value="${sessionScope.lastR}">
                                     </td>
                                 </tr>
                                 <tr><td></td><td class="error-text" id="r-error"></td></tr>
@@ -99,11 +100,11 @@
                             </thead>
                             <tbody id="results-body">
                             <c:choose>
-                                <c:when test="${empty resultsBean.results}">
+                                <c:when test="${empty sessionScope.results}">
                                     <tr><td colspan="6">Проверок пока не было</td></tr>
                                 </c:when>
                                 <c:otherwise>
-                                    <c:forEach var="res" items="${resultsBean.results}">
+                                    <c:forEach var="res" items="${sessionScope.results}">
                                         <tr data-x="${res.x}" data-y="${res.y}" data-r="${res.r}" data-hit="${res.hit}">
                                             <td><c:out value="${res.x}"/></td>
                                             <td><c:out value="${res.y}"/></td>
