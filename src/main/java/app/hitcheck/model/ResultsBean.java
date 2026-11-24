@@ -41,10 +41,6 @@ public class ResultsBean implements Serializable {
         return copy;
     }
 
-    public synchronized boolean isEmpty() {
-        return results.isEmpty();
-    }
-
     public synchronized String getLastR() {
         return lastR;
     }

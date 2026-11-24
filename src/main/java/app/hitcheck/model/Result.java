@@ -50,10 +50,6 @@ public class Result implements Serializable {
         return currentTime;
     }
 
-    public long getExecTimeNanos() {
-        return execTimeNanos;
-    }
-
     public String getExecTimeMicros() {
         return String.format(Locale.US, "%.1f", execTimeNanos / 1000.0);
     }

@@ -16,7 +16,7 @@
     <tr><td><h1>Лабораторная работа №3</h1></td></tr>
     <tr><td class="header-row">Студент: Кадилова Елена Владимировна</td></tr>
     <tr><td class="header-row">Группа: Веб-пр (P3215) 1.8</td></tr>
-    <tr><td class="header-row">Вариант: 222</td></tr>
+    <tr><td class="header-row">Вариант: 223</td></tr>
     </tbody>
 </table>
 
